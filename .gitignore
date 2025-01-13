@@ -1,0 +1,9 @@
+**/.terraform/
+**/.terraform.lock.hcl
+**/graph.dot
+**/graph.png
+
+.env
+test.py
+
+
