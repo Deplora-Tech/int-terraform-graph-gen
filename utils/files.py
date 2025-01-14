@@ -1,6 +1,7 @@
 from typing import List, Dict
 import os
 import requests
+from dotenv import load_dotenv
 
 
 def openfile(filename, mode):
@@ -80,10 +81,10 @@ def replace_terraform_file(filename):
         print(e)
 
 def upload_image(path: str, session_id: str):
-
+    load_dotenv()
     with open(path, "rb") as image_file:
         response = requests.post(
-            f'http://127.0.0.1:8080/graph/upload-image/{session_id}',
+            f'{os.getenv('DEPLORA_URL')}/{session_id}',
             files={"file": image_file}
         )
     print(response.json())
