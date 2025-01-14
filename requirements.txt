@@ -1,0 +1,13 @@
+
+anyio
+diagrams
+fastapi
+graphviz
+pip
+pydantic
+pydantic_core
+pydot
+python-multipart
+requests
+typing_extensions
+uvicorn

@@ -5,5 +5,22 @@
 
 .env
 test.py
+*.pyc
+*.pyo
+__pycache__/
+venv/
+*.log
+.DS_Store
+*.sqlite3
+/staticfiles/
+/mediafiles/
+.coverage
+htmlcov/
+/build/
+/tmp/
+.dockerignore
+docker-compose.override.yml
+.vscode/
+.idea/
 
 
