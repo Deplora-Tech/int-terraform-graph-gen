@@ -83,7 +83,7 @@ def upload_image(path: str, session_id: str):
 
     with open(path, "rb") as image_file:
         response = requests.post(
-            "http://127.0.0.1:8000/graph/upload-image",
+            f'http://127.0.0.1:8080/graph/upload-image/{session_id}',
             files={"file": image_file}
         )
     print(response.json())

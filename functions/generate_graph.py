@@ -10,32 +10,28 @@ logging.basicConfig(level=logging.DEBUG, format='(%(threadName)-9s) %(message)s'
 logger = logging.getLogger(__name__)
 
 number_queue = JoinableQueue()
-str_queue = JoinableQueue()
 processes = {}
 
-def consumer(in_queue: JoinableQueue, out_queue: JoinableQueue, file: str):
-    print(file)
+def consumer(in_queue: JoinableQueue, dir: str):
     while True:
         item = in_queue.get()
-        heavy_task(item, file)
-        out_queue.put(item.id)
+        heavy_task(item, dir)
         in_queue.task_done()
 
-def heavy_task(x: GenerateGraphModel, file):
+def heavy_task(data: GenerateGraphModel, dir):
 
-    process_file = f"terraform/{file}/{file.split('_')[1]}.tf"
-    directory = f"terraform/{file}"
-    print("currently working on:", file)
+    directory = f"terraform/{dir}"
+    logger.info(f"currently working on: {dir}")
     try:
-        file_x = x.file
-        print(file_x)
-        writefiles(directory, x.file)
+        files = data.files
+        writefiles(directory, files)
         cmd(["terraform", "init"], directory)
         cmd(["terraform", "validate"], directory)
         dot_content = check_cmd(["terraform", "graph", "-draw-cycles"], directory)
         dot_file_path = "/".join([directory, "graph.dot"])
         writefile(dot_file_path, str(dot_content.decode("utf-8") ))
-        parse_dot_to_diagram(dot_file_path, f"{directory}/graph")
+        image_path = parse_dot_to_diagram(dot_file_path, f"{directory}/graph")
+        upload_image(".".join([image_path, "png"]), data.id)    
     except Exception as e:
         print("Error", e)
     finally:
@@ -45,17 +41,18 @@ def heavy_task(x: GenerateGraphModel, file):
 class Threads:
     try:
         def start(self):
-            print("running")
+            logger.info("starting threads")
             for i in range(4):
-                p = Process(target=consumer, args=(number_queue, str_queue, f'terraform_{i+1}'), daemon=True)
+                p = Process(target=consumer, args=(number_queue, f'terraform_{i+1}'), daemon=True)
                 p.start()
     except Exception as e:
-        print("Error", e)
+        logger.error(e)
 
 async def producer(req: GenerateGraphModel):
     try:
         number_queue.put(req)
-        return number_queue.qsize()
+        # print number_queue readable
+        return {"message": "task sheduled successfully", "task_id": req.id}
     except Exception as e:
         return {"Error": e}
 

@@ -1,6 +1,5 @@
 from diagrams import Diagram
 import pydot
-from utils.files import upload_image
 from diagrams.aws.analytics import (
     AmazonOpensearchService,
     Analytics,
@@ -652,4 +651,4 @@ def parse_dot_to_diagram(directory: str, output_file="terraform_graph"):
             if src in created_nodes and dest in created_nodes:
                 created_nodes[src] >> created_nodes[dest]
 
-    upload_image(".".join([output_file, "png"]), "session_id")
+    return output_file

@@ -3,5 +3,5 @@ from typing import Dict
 
 class GenerateGraphModel(BaseModel):
     id: str
-    file: Dict[str, str]
+    files: Dict[str, str]
 

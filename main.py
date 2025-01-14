@@ -2,7 +2,7 @@ import os
 
 from fastapi import FastAPI
 
-from functions.generate_graph import Threads, str_queue, number_queue
+from functions.generate_graph import Threads, number_queue
 from routes import generate_graph
 import time
 from contextlib import asynccontextmanager
@@ -16,7 +16,6 @@ async def lifespan(app: FastAPI):
     consumer.start()
     time.sleep(10)
     yield
-    str_queue.join()
     number_queue.join()
 
 app = FastAPI(lifespan=lifespan)
