@@ -1,7 +1,7 @@
 import os
 
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from functions.generate_graph import Threads, number_queue
 from routes import generate_graph
 import time
@@ -21,7 +21,13 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(generate_graph.graph_router, prefix="/graph")
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def read_root():

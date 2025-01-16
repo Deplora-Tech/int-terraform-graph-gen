@@ -608,7 +608,7 @@ def parse_dot_to_diagram(directory: str, output_file="terraform_graph"):
     dot_graph = pydot.graph_from_dot_data(dot_data)[0]
 
     graph_attributes = {
-        "bgcolor": "#000021",
+        "bgcolor": "divide-white/[0.02]",
         "rankdir": "RL",
         "nodesep": "2.0",
         "ranksep": "2.5",
