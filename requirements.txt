@@ -11,3 +11,5 @@ python-multipart
 requests
 typing_extensions
 uvicorn
+python-dotenv
+files

@@ -652,3 +652,6 @@ def parse_dot_to_diagram(directory: str, output_file="terraform_graph"):
                 created_nodes[src] >> created_nodes[dest]
 
     return output_file
+
+if __name__ == "__main__":
+    parse_dot_to_diagram("/home/sahiru/deplora/repo-clones/d114e906-957a-428f-b1af-6c47bb6577c4/po-server/terraform/graph.dot")
